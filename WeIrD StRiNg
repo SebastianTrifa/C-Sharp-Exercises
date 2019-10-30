@@ -1,0 +1,41 @@
+/*Write a function that accepts a string, and returns the same string with all even indexed characters in each word upper cased, 
+and all odd indexed characters in each word lower cased. The indexing just explained is zero based, so the zero-ith index is even, 
+therefore that character should be upper cased.*/
+
+using System;
+using System.Text;
+
+public class Kata
+{
+    public static string ToWeirdCase(string s)
+    {
+        StringBuilder str = new StringBuilder();
+        string lower = "abcdefghijklmnopqrstuvwxyz";
+        string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int b=0;
+        for (int i = 0; i <= s.Length - 1; i++)
+        {
+            if (b % 2 == 0)
+            {
+                if (lower.Contains(s[i].ToString()))
+                    str.Append(upper[lower.IndexOf(s[i])]);
+                if (upper.Contains(s[i].ToString()))
+                    str.Append(upper[upper.IndexOf(s[i])]);
+            }
+            if (b % 2 == 1)
+            {
+                if (lower.Contains(s[i].ToString()))
+                    str.Append(lower[lower.IndexOf(s[i])]);
+                if (upper.Contains(s[i].ToString()))
+                    str.Append(lower[upper.IndexOf(s[i])]);
+            }
+            b++;
+            if (!lower.Contains(s[i])&&!upper.Contains(s[i]))
+            {
+             str.Append(s[i]);
+             b=0;
+            }
+        }
+        return str.ToString();
+    }
+}
