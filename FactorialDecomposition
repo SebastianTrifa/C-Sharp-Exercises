@@ -1,0 +1,89 @@
+/*The aim of the kata is to decompose n! (factorial n) into its prime factors.
+
+Examples:
+
+n = 12; decomp(12) -> "2^10 * 3^5 * 5^2 * 7 * 11"
+since 12! is divisible by 2 ten times, by 3 five times, by 5 two times and by 7 and 11 only once.
+
+n = 22; decomp(22) -> "2^19 * 3^9 * 5^4 * 7^3 * 11^2 * 13 * 17 * 19"
+
+n = 25; decomp(25) -> 2^22 * 3^10 * 5^6 * 7^3 * 11^2 * 13 * 17 * 19 * 23
+Prime numbers should be in increasing order. When the exponent of a prime is 1 don't put the exponent.
+
+Notes
+
+the function is decomp(n) and should return the decomposition of n! into its prime factors in increasing order of the primes, as a string.
+factorial can be a very big number (4000! has 12674 digits, n will go from 300 to 4000).
+In Fortran - as in any other language - the returned string is not permitted to contain any redundant trailing whitespace: you can use 
+dynamically allocated character strings.*/
+
+using System;
+using System.Collections.Generic;
+
+class FactDecomp
+{
+	public static string Decomp(int n)
+	{
+		         Dictionary<int, int> factors = new Dictionary<int, int>();
+            string factorial = "";
+            for(int f = 2; f <= n; f++)
+            {
+                int m = f;
+                Console.WriteLine(m);
+                int j = 0;
+                while (m % 2 == 0)
+                {
+                    m /= 2;
+                    j++;
+                }
+                if (j > 0)
+                {
+                    if (!factors.ContainsKey(2))
+                    {
+                        factors.Add(2, j);
+                    }
+                    else
+                    {
+                        j += factors[2];
+                        factors[2] = j;
+                    }
+                }
+                for (int i = 3; i <= m; i+=2)
+                {
+                    j = 0;
+                    while (m % i == 0)
+                    {
+                        m /= i;
+                        j++;
+                    }
+                    if (j > 0)
+                    {
+                        if (!factors.ContainsKey(i))
+                        {
+                            factors.Add(i, j);
+                        }
+                        else
+                        {
+                            j += factors[i];
+                            factors[i] = j;
+                        }
+                    }
+                }
+                //foreach(int i in factors.Keys)
+                  //  Console.WriteLine(i);
+            }
+            foreach(int i in factors.Keys)
+            {
+                factorial += i;
+                if(factors[i]>1)
+                {
+                    factorial += "^" + factors[i] + " " + "*" + " ";
+                }
+                else
+                {
+                    factorial += " " + "*" + " ";
+                }
+            }
+            return factorial.Trim().Substring(0, factorial.Length-3);;
+	}
+}
