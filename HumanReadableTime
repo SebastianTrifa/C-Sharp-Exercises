@@ -1,0 +1,31 @@
+/*Write a function, which takes a non-negative integer (seconds) as input and returns the time in a human-readable format (HH:MM:SS)
+
+HH = hours, padded to 2 digits, range: 00 - 99
+MM = minutes, padded to 2 digits, range: 00 - 59
+SS = seconds, padded to 2 digits, range: 00 - 59*/
+
+using System.Text;
+public static class TimeFormat
+{
+    public static string GetReadableTime(int seconds)
+    {
+        int h, m, s;
+        h = seconds / 3600;
+        StringBuilder strh = new StringBuilder();
+        seconds = seconds % 3600;
+        m = seconds / 60;
+        s = seconds % 60;
+        if (h < 10)
+            strh.Append("0");
+        strh.Append(h);
+        strh.Append(":");
+        if (m < 10)
+            strh.Append("0");
+        strh.Append(m);
+        strh.Append(":");
+        if (s < 10)
+            strh.Append("0");
+        strh.Append(s);
+        return strh.ToString();
+    }
+}
