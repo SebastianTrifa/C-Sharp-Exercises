@@ -17,13 +17,6 @@ namespace Powers3
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            int i = 5;
-            Console.WriteLine((int)5);
-            IsPerfectPower(i);
-        }
-
         private static (int, int)? IsPerfectPower(int n)
         {
             int j = 1;
