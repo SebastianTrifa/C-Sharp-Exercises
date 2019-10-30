@@ -1,0 +1,91 @@
+/*A perfect power is a classification of positive integers:
+
+In mathematics, a perfect power is a positive integer that can be expressed as an integer power of another positive integer. More formally,
+n is a perfect power if there exist natural numbers m > 1, and k > 1 such that mk = n.
+
+Your task is to check wheter a given integer is a perfect power. If it is a perfect power, return a pair m and k with mk = n as a proof. 
+Otherwise return Nothing, Nil, null, NULL, None or your language's equivalent.
+
+Note: For a perfect power, there might be several pairs. For example 81 = 3^4 = 9^2, so (3,4) and (9,2) are valid solutions. However, the 
+tests take care of this, so if a number is a perfect power, return any pair that proves it.
+
+This is the second most efficient version of the program*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Divisors
+{
+    class Program
+    {
+        private static (int, int)? IsPerfectPower(int n)
+        {
+            if (n < 2)
+                return null;
+            Dictionary<int, int> factors = new Dictionary<int, int>();
+            int j = 0;
+            while (n % 2 == 0)
+            {
+                n /= 2;
+                j++;
+            }
+            if (j == 1)
+                return null;
+            if (j > 1)
+            {
+                factors.Add(2, j);
+            }
+            for (int i = 3; i <= n; i += 2)
+            {
+                j = 0;
+                while (n % i == 0)
+                {
+                    n /= i;
+                    j++;
+                }
+                if (j == 1)
+                    return null;
+                if (j > 1)
+                {
+                    if (!factors.ContainsKey(i))
+                    {
+                        factors.Add(i, j);
+                    }
+                    else
+                    {
+                        j += factors[i];
+                        factors[i] = j;
+                    }
+                }
+            }
+            //check if there is a common divisor between powers of factors
+            int min = factors.First().Value;
+            j = 1;
+            foreach(int i in factors.Values)
+            {
+                if (i < min)
+                    min = i;
+            }
+            for(int i=2; i<=min; i++)
+            {
+                bool ok = true;
+                foreach (int f in factors.Values) {
+                    if (f % i != 0)
+                        ok = false;
+                }
+                if(ok)
+                {
+                    foreach(int f in factors.Keys)
+                    {
+                        j *= Convert.ToInt32(Math.Pow(f, (factors[f] / i)));
+                    }
+                    Console.WriteLine($"{j},{i}");
+                    return (j, i);
+                }
+            }
+            Console.WriteLine("not perfect");
+            return null;
+        }
+    }
+}
