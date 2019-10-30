@@ -1,0 +1,32 @@
+//ROT13 is a simple letter substitution cipher that replaces a letter with the letter 13 letters after it in the alphabet. 
+//ROT13 is an example of the Caesar cipher.
+
+using System;
+using System.Text;
+
+public class Kata
+{
+    public static string Rot13(string message)
+    {
+        string alpha = "abcdefghijklmnopqrstuvwxyz";
+        bool upper=false;
+        StringBuilder cypher = new StringBuilder();
+        foreach (char c in message)
+        {
+            upper=!alpha.Contains(c.ToString());
+            if (alpha.Contains(char.ToLower(c).ToString()))
+            {
+                int i = alpha.IndexOf(char.ToLower(c));
+                i += 13;
+                i %= 26;
+                if (upper)
+                    cypher.Append(char.ToUpper(alpha[i]));
+                else
+                    cypher.Append(alpha[i]);
+            }
+            else
+                cypher.Append(c);
+        }
+        return cypher.ToString();
+    }
+}
