@@ -1,0 +1,160 @@
+/*On 08/26/2016 (26.08.2016) the German Fussball-Bundesliga (national soccer league) started another new season!
+
+In this kata you get an array with 9 strings, which contain the matches from the first match day.
+Every string has this format, where x and y are the number of goals for the teams, if the match has already been played:
+
+x:y [Team 1] - [Team 2]
+
+Example:
+6:0 FC Bayern München - Werder Bremen
+-:- Eintracht Frankfurt - Schalke 04
+The team, which has shot more goals than the other team, wins the match.
+
+Your method should create and return the league table as one string.
+
+Every line in the table follows these rules:
+
+ 1. Tableplace with two chars and a dot (" 1.", "12.")
+ 2. Space
+ 3. Name of the team/club padded right up to 30 chars (filled up with spaces).
+ 4. Number of played matches (in this kata always only one digit)
+ 5. Two spaces
+ 6. Number of won matches (in this kata always only one digit)
+ 7. Two spaces
+ 8. Number of tie matches (in this kata always only one digit)
+ 9. Two spaces
+10. Number of lost matches (in this kata always only one digit)
+11. Two spaces
+12. Differences of goals (shot vs. gotten)
+13. Two spaces
+14. Count of points
+It is 3 points for a won match and 1 point for a tie.
+The table has to be sorted by these criteria:
+
+1. Points
+2. If the points are the same: The difference of goals. (2:0 is better than 1:0)
+3. If the difference of goals is the same: More goals are better! (2:1 is better than 1:0)
+4. Otherwise: The teams share the same place, but ordered by the name of the team (case-insensitive!)!
+Example with the two matches above, if the league WOULD only have 4 teams:
+
+ 1. FC Bayern München             1  1  0  0  6:0  3 
+ 2. Eintrach Frankfurt            0  0  0  0  0:0  0
+ 2. Schalke 04                    0  0  0  0  0:0  0
+ 4. Werder Bremen                 1  0  0  1  0:6  0
+You do not have to do a check for the input values. It will always be an array of 9 strings and all strings will be complete!*/
+
+using System;
+
+public class Bundesliga
+{
+  public static string Table(string[] results)
+  {
+            string table = "";
+            string[] teams = new string[2 * results.Length];
+            int[] played = new int[2 * results.Length], wins = new int[2 * results.Length],
+                draws = new int[2 * results.Length], losses = new int[2 * results.Length],
+                scored = new int[2 * results.Length], conceded = new int[2 * results.Length],
+                points = new int[2 * results.Length];
+            for (int i = 0; i <= results.Length - 1; i++)
+            {
+                int score1 = -1, score2 = -1;
+                string[] split1 = results[i].Split(" - ");
+                string[] split2 = split1[0].Split(" ", 2);
+                string team1 = split1[1];
+                string team2 = split2[1];
+                string[] split3 = split2[0].Split(":");
+                if (split3[0] == "-")
+                {
+                    played[2 * i] = 0;
+                    played[2 * i + 1] = 0;
+                    scored[2 * i] = 0;
+                    scored[2 * i + 1] = 0;
+                    conceded[2 * i] = 0;
+                    conceded[2 * i + 1] = 0;
+                    wins[2 * i] = 0;
+                    wins[2 * i + 1] = 0;
+                    draws[2 * i] = 0;
+                    draws[2 * i + 1] = 0;
+                    losses[2 * i] = 0;
+                    losses[2 * i + 1] = 0;
+                    points[2 * i] = 0;
+                    points[2 * i + 1] = 0;
+                }
+                if (split3[0] != "-")
+                {
+                    score1 = Int32.Parse(split3[0]);
+                    score2 = Int32.Parse(split3[1]);
+                    played[2 * i] = 1;
+                    played[2 * i + 1] = 1;
+                    scored[2 * i] = score1;
+                    scored[2 * i + 1] = score2;
+                    conceded[2 * i] = score2;
+                    conceded[2 * i + 1] = score1;
+                    if (score1 == score2)
+                    {
+                        points[2 * i] = 1;
+                        points[2 * i + 1] = 1;
+                        draws[2 * i] = 1;
+                        draws[2 * i + 1] = 1;
+                        wins[2 * i] = 0;
+                        wins[2 * i + 1] = 0;
+                        losses[2 * i] = 0;
+                        losses[2 * i + 1] = 0;
+                    }
+                    if (score1 > score2)
+                    {
+                        points[2 * i] = 3;
+                        points[2 * i + 1] = 0;
+                        draws[2 * i] = 0;
+                        draws[2 * i + 1] = 0;
+                        wins[2 * i] = 1;
+                        wins[2 * i + 1] = 0;
+                        losses[2 * i] = 0;
+                        losses[2 * i + 1] = 1;
+                    }
+                    if (score1 < score2)
+                    {
+                        points[2 * i] = 0;
+                        points[2 * i + 1] = 3;
+                        draws[2 * i] = 0;
+                        draws[2 * i + 1] = 0;
+                        wins[2 * i] = 0;
+                        wins[2 * i + 1] = 1;
+                        losses[2 * i] = 1;
+                        losses[2 * i + 1] = 0;
+                    }
+                }
+                teams[2 * i] = team2;
+                teams[2 * i + 1] = team1;
+            }
+                int p = -1, gs =-1, gd = -100, k= 0, n=0;
+                string name = "";
+                for (int j = 0; j <= results.Length * 2 - 1; j++)
+                {
+                    int p0 = p, gd0 = gd, gs0 = gs;
+                    p = -1;
+                    for (int i = 0; i <= results.Length * 2 - 1; i++)
+                    {
+                    if (points[i] > p || (points[i] == p && (scored[i] - conceded[i]) > gd) || (points[i] == p && (scored[i] - conceded[i]) == gd && scored[i] > gs)
+                            || (points[i] == p && (scored[i] - conceded[i]) == gd && scored[i] == gs && string.Compare(teams[i].ToLower(), name) == -1))
+                        {
+                            p = points[i];
+                            gd = scored[i] - conceded[i];
+                            gs = scored[i];
+                            name = teams[i];
+                            k = i;
+                        }
+                    }
+                    if (points[k] != p0 || (scored[k] - conceded[k]) != gd0 || scored[k] != gs0)
+                        n=j+1;
+                    if (n < 10)
+                        table += " ";
+                    string row = n.ToString() + ". " + name.PadRight(30) + " " + played[k] + "  " + wins[k] + "  " + draws[k] + "  " + losses[k] + "  " + scored[k] + ":" + conceded[k] + "  " + points[k];
+                    table += n.ToString() + ". " + name.PadRight(29) + " " + played[k] + "  " + wins[k] +"  " + draws[k] + "  " + losses[k] + "  " + scored[k] + ":" + conceded[k] + "  " + points[k] + "\n";
+                    Console.WriteLine($"{row}\n");
+                    points[k] = -1;
+                }
+            table = table.Substring(0, table.Length - 1);
+            return table;
+        }
+}
