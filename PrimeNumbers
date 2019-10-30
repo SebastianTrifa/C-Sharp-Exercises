@@ -1,0 +1,61 @@
+/*Given a positive number n > 1 find the prime factor decomposition of n. The result will be a string with the following form :
+
+ "(p1**n1)(p2**n2)...(pk**nk)"
+with the p(i) in increasing order and n(i) empty if n(i) is 1.
+
+Example: n = 86240 should return "(2**5)(5)(7**2)(11)"*/
+
+using System;
+using System.Collections.Generic;
+
+public class PrimeDecomp {
+
+	public static String factors(int n) {
+    Dictionary<int, int> factors = new Dictionary<int, int>();
+            string factorial = "";
+                int j = 0;
+                while (n % 2 == 0)
+                {
+                    n /= 2;
+                    j++;
+                }
+                if (j > 0)
+                {
+                    factors.Add(2, j);
+                }
+                for (int i = 3; i <= n; i += 2)
+                {
+                    j = 0;
+                    while (n % i == 0)
+                    {
+                        n /= i;
+                        j++;
+                    }
+                    if (j > 0)
+                    {
+                        if (!factors.ContainsKey(i))
+                        {
+                            factors.Add(i, j);
+                        }
+                        else
+                        {
+                            j += factors[i];
+                            factors[i] = j;
+                        }
+                    }
+                }
+            foreach (int i in factors.Keys)
+            {
+                factorial +="(" + i;
+                if (factors[i] > 1)
+                {
+                    factorial += "**" + factors[i] + ")";
+                }
+                else
+                {
+                    factorial += ")";
+                }
+            }
+            return factorial;
+  }
+}
