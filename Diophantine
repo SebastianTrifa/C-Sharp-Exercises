@@ -1,0 +1,41 @@
+/*In mathematics, a Diophantine equation is a polynomial equation, usually with two or more unknowns, such that only the integer 
+solutions are sought or studied.
+
+In this kata we want to find all integers x, y (x >= 0, y >= 0) solutions of a diophantine equation of the form:
+
+x2 - 4 * y2 = n
+(where the unknowns are x and y, and n is a given positive number) in decreasing order of the positive xi.
+
+If there is no solution return [] or "[]" or "".*/ 
+
+using System;
+
+public class Dioph {
+	
+	public static string solEquaStr(long n) {
+		string sol="[";
+            Console.WriteLine($"test");
+            for(long i=1; i<=Math.Sqrt(n); i++)
+            {
+                if(n%i==0)
+                {
+                    long a = (long)n / i;
+                    if((a+i)%2==0)
+                    {
+                        long y;
+                        long x = (a + i) / 2;
+                        if ((x - i) % 2 == 0)
+                        {
+                            if (sol.Length > 1)
+                                sol += ", ";
+                            y = (x - i) / 2;
+                            sol += "[" + x.ToString() + ", " + y.ToString() + "]";
+                        }
+                    }
+                }
+            }
+            sol += "]";
+            Console.WriteLine(sol);
+            return sol;
+	}
+}
