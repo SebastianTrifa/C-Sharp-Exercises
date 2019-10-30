@@ -1,0 +1,41 @@
+//What is an anagram? Well, two words are anagrams of each other if they both contain the same letters.
+
+//Write a function that will find all the anagrams of a word from a list. You will be given two inputs a word and an array with words.
+//You should return an array of all the anagrams or an empty array if there are none.
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+public static class Kata
+{
+  public static List<string> Anagrams(string word, List<string> words)
+  {
+    int ok;
+    Console.WriteLine(word);
+    List<string> results = new List<string> ();
+    foreach (string element in words)
+    {
+      ok=1;
+      Console.WriteLine(element);
+      foreach(char c in element + word)
+      {
+        if(Count(element, c)!=Count(word, c))
+          ok=0;
+      }
+      if(ok==1)
+        results.Add(element);
+    }
+    return results;
+  }
+  public static int Count(string s, char c)
+  {
+    int n=0;
+    for(int i=0; i<=s.Length-1; i++)
+      if(s[i]==c)
+      {
+        n++;
+      }
+    return n;
+  }
+}
