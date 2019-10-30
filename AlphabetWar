@@ -1,0 +1,118 @@
+/*Write a function that accepts fight string consists of only small letters and return who wins the fight. When the left side wins return 
+Left side wins!, when the right side wins return Right side wins!, in other case return Let's fight again!.
+
+The left side letters and their power:
+
+ w - 4
+ p - 3 
+ b - 2
+ s - 1
+ t - 0 (but it's priest with Wo lo loooooooo power)
+The right side letters and their power:
+
+ m - 4
+ q - 3 
+ d - 2
+ z - 1
+ j - 0 (but it's priest with Wo lo loooooooo power)
+The other letters don't have power and are only victims.
+The priest units t and j change the adjacent letters from hostile letters to friendly letters with the same power.
+
+mtq => wtp
+wjs => mjz
+A letter with adjacent letters j and t is not converted i.e.:
+
+tmj => tmj
+jzt => jzt
+The priests (j and t) do not convert the other priests ( jt => jt).
+
+Example
+AlphabetWar("z")         //=>  "z"  => "Right side wins!"
+AlphabetWar("tz")        //=>  "ts" => "Left side wins!" 
+AlphabetWar("jz")        //=>  "jz" => "Right side wins!" 
+AlphabetWar("zt")        //=>  "st" => "Left side wins!" 
+AlphabetWar("azt")       //=> "ast" => "Left side wins!"
+AlphabetWar("tzj")       //=> "tzj" => "Right side wins!"*/
+
+using System;
+
+public class Kata
+    {
+        public static string AlphabetWar(string fight)
+        {
+            char[] left = { 'w', 'p', 'b', 's' };
+            char[] right = { 'm', 'q', 'd', 'z' };
+            char[] letters = fight.ToCharArray();
+            int sl = 0;
+            int sr = 0;
+            for (int i=0; i<=fight.Length-1; i++)
+            {
+                if (letters[i] == 't')
+                {
+                    //find index in array
+                    try
+                    {
+                        if (i == letters.Length - 2 || letters[i + 2] != 'j')
+                        {
+                            int j = Find(right, letters[i + 1]);
+                            letters[i + 1] = left[j];
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        if (i == 1 || letters[i - 2] != 'j')
+                        {
+                            int j = Find(right, letters[i - 1]);
+                            letters[i - 1] = left[j];
+                        }
+                    }
+                    catch { }
+                }
+                if (letters[i] == 'j')
+                {
+                    try
+                    {
+                        if (i == letters.Length - 2 || letters[i + 2] != 't')
+                        {
+                            int j = Find(left, letters[i + 1]);
+                            letters[i + 1] = right[j];
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        if (i == 1 || letters[i - 2] != 't')
+                        {
+                            int j = Find(left, letters[i - 1]);
+                            letters[i - 1] = right[j];
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            foreach(char c in letters)
+            {
+                sl+=4-Find(left, c);
+                sr+=4-Find(right, c);
+            }
+            Console.WriteLine(letters);
+            if (sl > sr)
+                return "Left side wins!";
+            else if (sl < sr)
+                return "Right side wins!";
+            else
+                return "Let's fight again!";
+        }
+
+        private static int Find(char[] team, char v)
+        {
+            for(int i=0; i<=3; i++)
+            {
+                if (team[i] == v)
+                    return i;
+            }
+            return 4;
+        }
+    }
