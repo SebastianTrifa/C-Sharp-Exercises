@@ -1,0 +1,929 @@
+//The maximum sum subarray problem consists in finding the maximum sum of a contiguous subsequence in an array or list of integers.
+
+//Easy case is when the list is made up of only positive numbers and the maximum sum is the sum of the whole array. If the list is 
+//made up of only negative numbers, return 0 instead.
+
+//Empty list is considered to have zero greatest sum. Note that the empty list or array is also a valid sublist/subarray.
+
+Stats
+Kata
+Solutions
+Translations
+Collections
+Kumite
+Social
+Discourse
+Completed (32)
+Unfinished
+Obsolete
+5 kyu
+Simple fraction to mixed number converter
+C#:
+using System;
+
+public class Kata
+{
+  public static string MixedFraction(string s)
+  {
+     string fraction = "";
+            string[] div;
+            div = s.Split("/");
+            int n0 = Int32.Parse(div[0]);
+            int n1 = Int32.Parse(div[1]);
+            int w;
+            try
+            {
+                w = n0 / n1;
+            }
+            catch(DivideByZeroException e)
+            { throw; }
+            if (n0 == 0)
+                return "0";
+            string sign = "";
+            w = 0;
+            if ((n0 > 0 && 0 > n1) || (n1 > 0 && 0 > n0))
+                sign = "-";
+            if (n0 < 0)
+                n0 = -n0;
+            if (n1 < 0)
+                n1 = -n1;
+            while (n0 > n1)
+            {
+                n0 -= n1;
+                w++;
+            }
+            for (int i = n0; i >= 2; i--)
+            {
+                if (n0 % i == 0 && n1 % i == 0)
+                {
+                    n0 /= i;
+                    n1 /= i;
+                }
+            }
+            fraction += sign;
+            if (n1 == 1)
+                return fraction += (w + 1).ToString();
+            if (w > 0)
+                fraction += w + " ";
+            fraction += n0 + "/" + n1;
+            return fraction;
+  }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Directions Reduction
+C#:
+using System;
+using System.Collections.Generic;
+
+public class DirReduction {
+  
+    public static string[] dirReduc(String[] a) {
+        bool ok = true;
+            List<string> c = new List<string>();
+            foreach(string s in a)
+            {
+                c.Add(s);
+            }
+            int l = a.Length;
+            while (ok)
+            {
+                ok = false;
+                for (int i = 0; i <= l - 2; i++)
+                {
+                    if (l - 1>=i && c[i] == "SOUTH" && c[i + 1] == "NORTH")
+                    {
+                        c.RemoveAt(i + 1);
+                        c.RemoveAt(i);
+                        ok = true;
+                        l -= 2;
+                        break;
+                    }
+                    if (l - 1 >= i && c[i] == "NORTH" && c[i + 1] == "SOUTH")
+                    {
+                        c.RemoveAt(i + 1);
+                        c.RemoveAt(i);
+                        ok = true;
+                        l -= 2;
+                        break;
+                    }
+                    if (l - 1 >= i && c[i] == "EAST" && c[i + 1] == "WEST")
+                    {
+                        c.RemoveAt(i + 1);
+                        c.RemoveAt(i);
+                        ok = true;
+                        l -= 2;
+                        break;
+                    }
+                    if (l - 1 >= i && c[i] == "WEST" && c[i + 1] == "EAST")
+                    {
+                        c.RemoveAt(i + 1);
+                        c.RemoveAt(i);
+                        ok = true;
+                        l -= 2;
+                        break;
+                    }
+                }
+                foreach(string s in c)
+                  Console.WriteLine(s);
+            }
+            return c.ToArray();
+    }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Primes in numbers
+C#:
+using System;
+using System.Collections.Generic;
+
+public class PrimeDecomp {
+
+	public static String factors(int n) {
+    Dictionary<int, int> factors = new Dictionary<int, int>();
+            string factorial = "";
+                int j = 0;
+                while (n % 2 == 0)
+                {
+                    n /= 2;
+                    j++;
+                }
+                if (j > 0)
+                {
+                    factors.Add(2, j);
+                }
+                for (int i = 3; i <= n; i += 2)
+                {
+                    j = 0;
+                    while (n % i == 0)
+                    {
+                        n /= i;
+                        j++;
+                    }
+                    if (j > 0)
+                    {
+                        if (!factors.ContainsKey(i))
+                        {
+                            factors.Add(i, j);
+                        }
+                        else
+                        {
+                            j += factors[i];
+                            factors[i] = j;
+                        }
+                    }
+                }
+            foreach (int i in factors.Keys)
+            {
+                factorial +="(" + i;
+                if (factors[i] > 1)
+                {
+                    factorial += "**" + factors[i] + ")";
+                }
+                else
+                {
+                    factorial += ")";
+                }
+            }
+            return factorial;
+  }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Factorial decomposition
+C#:
+using System;
+using System.Collections.Generic;
+
+class FactDecomp
+{
+	public static string Decomp(int n)
+	{
+		         Dictionary<int, int> factors = new Dictionary<int, int>();
+            string factorial = "";
+            for(int f = 2; f <= n; f++)
+            {
+                int m = f;
+                Console.WriteLine(m);
+                int j = 0;
+                while (m % 2 == 0)
+                {
+                    m /= 2;
+                    j++;
+                }
+                if (j > 0)
+                {
+                    if (!factors.ContainsKey(2))
+                    {
+                        factors.Add(2, j);
+                    }
+                    else
+                    {
+                        j += factors[2];
+                        factors[2] = j;
+                    }
+                }
+                for (int i = 3; i <= m; i+=2)
+                {
+                    j = 0;
+                    while (m % i == 0)
+                    {
+                        m /= i;
+                        j++;
+                    }
+                    if (j > 0)
+                    {
+                        if (!factors.ContainsKey(i))
+                        {
+                            factors.Add(i, j);
+                        }
+                        else
+                        {
+                            j += factors[i];
+                            factors[i] = j;
+                        }
+                    }
+                }
+                //foreach(int i in factors.Keys)
+                  //  Console.WriteLine(i);
+            }
+            foreach(int i in factors.Keys)
+            {
+                factorial += i;
+                if(factors[i]>1)
+                {
+                    factorial += "^" + factors[i] + " " + "*" + " ";
+                }
+                else
+                {
+                    factorial += " " + "*" + " ";
+                }
+            }
+            return factorial.Trim().Substring(0, factorial.Length-3);;
+	}
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Car Park Escape
+C#:
+using System;
+
+namespace CodeWars
+{
+    public class Kata
+    {
+        public string[] escape(int[,] carpark)
+        {
+            string route = "";
+            int x=0, y=0;
+            int m = carpark.GetLength(0);
+            int n = carpark.GetLength(1);
+            for (int j = 0; j <= m - 1; j++)
+            {
+                for (int i = 0; i <= n - 1; i++)
+                {
+                    if (carpark[j, i] == 2)
+                    {
+                        x = i;
+                        y = j;
+                    }
+                }
+            }
+            int s = 1;
+            for (int j = m - y - 1; j > 0; j--)
+            {
+                Console.WriteLine($"m:{m}, y:{y}, n:{n}, x:{x}");
+                for (int i = 0; i <= n - 1; i++)
+                {
+
+                    if (carpark[m - j - 1, i] == 1)
+                    {
+                        if (x - i > 0)
+                            route += "L" + (x - i).ToString() + " ";
+                        else if (x - i < 0)
+                            route += "R" + (i - x).ToString() + " ";
+                        x = i;
+                    }
+                }
+                Console.WriteLine($"{carpark[m - j, x]}, {m - j}");
+                if (carpark[m - j, x] == 1)
+                {
+                    s++;
+                }
+                else
+                {
+                    route += "D" + s.ToString() + " ";
+                    s = 1;
+                    Console.WriteLine(route);
+                }
+            }
+            if(n - x - 1 != 0)
+              route += "R" + (n - x - 1).ToString();
+            foreach(string str in route.Trim().Split(" "))
+            {
+                Console.WriteLine(str);
+                Console.WriteLine(",");
+            }
+            if (route == "")
+                return new string[] { };
+            return route.Trim().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+        }
+    }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Bundesliga 1. Spieltag - First Match Day
+C#:
+using System;
+
+public class Bundesliga
+{
+  public static string Table(string[] results)
+  {
+            string table = "";
+            string[] teams = new string[2 * results.Length];
+            int[] played = new int[2 * results.Length], wins = new int[2 * results.Length],
+                draws = new int[2 * results.Length], losses = new int[2 * results.Length],
+                scored = new int[2 * results.Length], conceded = new int[2 * results.Length],
+                points = new int[2 * results.Length];
+            for (int i = 0; i <= results.Length - 1; i++)
+            {
+                int score1 = -1, score2 = -1;
+                string[] split1 = results[i].Split(" - ");
+                string[] split2 = split1[0].Split(" ", 2);
+                string team1 = split1[1];
+                string team2 = split2[1];
+                string[] split3 = split2[0].Split(":");
+                if (split3[0] == "-")
+                {
+                    played[2 * i] = 0;
+                    played[2 * i + 1] = 0;
+                    scored[2 * i] = 0;
+                    scored[2 * i + 1] = 0;
+                    conceded[2 * i] = 0;
+                    conceded[2 * i + 1] = 0;
+                    wins[2 * i] = 0;
+                    wins[2 * i + 1] = 0;
+                    draws[2 * i] = 0;
+                    draws[2 * i + 1] = 0;
+                    losses[2 * i] = 0;
+                    losses[2 * i + 1] = 0;
+                    points[2 * i] = 0;
+                    points[2 * i + 1] = 0;
+                }
+                if (split3[0] != "-")
+                {
+                    score1 = Int32.Parse(split3[0]);
+                    score2 = Int32.Parse(split3[1]);
+                    played[2 * i] = 1;
+                    played[2 * i + 1] = 1;
+                    scored[2 * i] = score1;
+                    scored[2 * i + 1] = score2;
+                    conceded[2 * i] = score2;
+                    conceded[2 * i + 1] = score1;
+                    if (score1 == score2)
+                    {
+                        points[2 * i] = 1;
+                        points[2 * i + 1] = 1;
+                        draws[2 * i] = 1;
+                        draws[2 * i + 1] = 1;
+                        wins[2 * i] = 0;
+                        wins[2 * i + 1] = 0;
+                        losses[2 * i] = 0;
+                        losses[2 * i + 1] = 0;
+                    }
+                    if (score1 > score2)
+                    {
+                        points[2 * i] = 3;
+                        points[2 * i + 1] = 0;
+                        draws[2 * i] = 0;
+                        draws[2 * i + 1] = 0;
+                        wins[2 * i] = 1;
+                        wins[2 * i + 1] = 0;
+                        losses[2 * i] = 0;
+                        losses[2 * i + 1] = 1;
+                    }
+                    if (score1 < score2)
+                    {
+                        points[2 * i] = 0;
+                        points[2 * i + 1] = 3;
+                        draws[2 * i] = 0;
+                        draws[2 * i + 1] = 0;
+                        wins[2 * i] = 0;
+                        wins[2 * i + 1] = 1;
+                        losses[2 * i] = 1;
+                        losses[2 * i + 1] = 0;
+                    }
+                }
+                teams[2 * i] = team2;
+                teams[2 * i + 1] = team1;
+            }
+                int p = -1, gs =-1, gd = -100, k= 0, n=0;
+                string name = "";
+                for (int j = 0; j <= results.Length * 2 - 1; j++)
+                {
+                    int p0 = p, gd0 = gd, gs0 = gs;
+                    p = -1;
+                    for (int i = 0; i <= results.Length * 2 - 1; i++)
+                    {
+                    if (points[i] > p || (points[i] == p && (scored[i] - conceded[i]) > gd) || (points[i] == p && (scored[i] - conceded[i]) == gd && scored[i] > gs)
+                            || (points[i] == p && (scored[i] - conceded[i]) == gd && scored[i] == gs && string.Compare(teams[i].ToLower(), name) == -1))
+                        {
+                            p = points[i];
+                            gd = scored[i] - conceded[i];
+                            gs = scored[i];
+                            name = teams[i];
+                            k = i;
+                        }
+                    }
+                    if (points[k] != p0 || (scored[k] - conceded[k]) != gd0 || scored[k] != gs0)
+                        n=j+1;
+                    if (n < 10)
+                        table += " ";
+                    string row = n.ToString() + ". " + name.PadRight(30) + " " + played[k] + "  " + wins[k] + "  " + draws[k] + "  " + losses[k] + "  " + scored[k] + ":" + conceded[k] + "  " + points[k];
+                    table += n.ToString() + ". " + name.PadRight(29) + " " + played[k] + "  " + wins[k] +"  " + draws[k] + "  " + losses[k] + "  " + scored[k] + ":" + conceded[k] + "  " + points[k] + "\n";
+                    Console.WriteLine($"{row}\n");
+                    points[k] = -1;
+                }
+            table = table.Substring(0, table.Length - 1);
+            return table;
+        }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Alphabet war - Wo lo loooooo priests join the war
+C#:
+using System;
+
+public class Kata
+    {
+        public static string AlphabetWar(string fight)
+        {
+            char[] left = { 'w', 'p', 'b', 's' };
+            char[] right = { 'm', 'q', 'd', 'z' };
+            char[] letters = fight.ToCharArray();
+            int sl = 0;
+            int sr = 0;
+            for (int i=0; i<=fight.Length-1; i++)
+            {
+                if (letters[i] == 't')
+                {
+                    //find index in array
+                    try
+                    {
+                        if (i == letters.Length - 2 || letters[i + 2] != 'j')
+                        {
+                            int j = Find(right, letters[i + 1]);
+                            letters[i + 1] = left[j];
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        if (i == 1 || letters[i - 2] != 'j')
+                        {
+                            int j = Find(right, letters[i - 1]);
+                            letters[i - 1] = left[j];
+                        }
+                    }
+                    catch { }
+                }
+                if (letters[i] == 'j')
+                {
+                    try
+                    {
+                        if (i == letters.Length - 2 || letters[i + 2] != 't')
+                        {
+                            int j = Find(left, letters[i + 1]);
+                            letters[i + 1] = right[j];
+                        }
+                    }
+                    catch { }
+                    try
+                    {
+                        if (i == 1 || letters[i - 2] != 't')
+                        {
+                            int j = Find(left, letters[i - 1]);
+                            letters[i - 1] = right[j];
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            foreach(char c in letters)
+            {
+                sl+=4-Find(left, c);
+                sr+=4-Find(right, c);
+            }
+            Console.WriteLine(letters);
+            if (sl > sr)
+                return "Left side wins!";
+            else if (sl < sr)
+                return "Right side wins!";
+            else
+                return "Let's fight again!";
+        }
+
+        private static int Find(char[] team, char v)
+        {
+            for(int i=0; i<=3; i++)
+            {
+                if (team[i] == v)
+                    return i;
+            }
+            return 4;
+        }
+    }
+2 weeks agoRefactorDiscuss
+5 kyu
+N00bify - English to n00b Translator
+C#:
+using System;
+
+public static class Kata
+{
+  public static string N00bify(string txt)
+  {
+    Console.WriteLine(txt);
+    char c = txt.ToLower()[0];
+    txt = txt.Replace("too","2");
+    txt = txt.Replace("Too","2");
+    txt = txt.Replace("to","2");
+    txt = txt.Replace("To","2");
+    txt = txt.Replace("fore", "4");
+            txt = txt.Replace("Fore", "4");
+            txt = txt.Replace("for", "4");
+            txt = txt.Replace("For", "4");
+            for(int i=0; i<=txt.Length-1; i++)
+            {
+                if (txt.ToLower()[i] == 'o' && txt.ToLower()[i+1] == 'o')
+                {
+                    txt = txt.Replace("oo", "00");
+                    txt = txt.Replace("Oo", "00");
+                    txt = txt.Replace("OO", "00");
+                }
+            }
+            txt = txt.Replace("Be", "B");
+            txt = txt.Replace("be", "b");
+            txt = txt.Replace("Are", "R");
+            txt = txt.Replace("are", "r");
+            txt = txt.Replace("You", "U");
+            txt = txt.Replace("you", "u");
+            txt = txt.Replace("Please", "Plz");
+            txt = txt.Replace("please", "plz");
+            txt = txt.Replace("People", "Ppl");
+            txt = txt.Replace("people", "ppl");
+            txt = txt.Replace("Have", "Haz");
+            txt = txt.Replace("have", "haz");
+            txt = txt.Replace("Really", "Rly");
+            txt = txt.Replace("really", "rly");
+            txt = txt.Replace("know", "no");
+            txt = txt.Replace("Know", "No");
+            txt = txt.Replace("s", "z");
+            txt = txt.Replace("S", "Z");
+            txt = txt.Replace(",","");
+            txt = txt.Replace("'","");
+            txt = txt.Replace(".","");
+            if (c == 'w')
+            {
+                txt = "LOL " + txt;
+            }
+            if (txt.Replace("!","").Replace("?","").Length >= 32)
+            {
+                txt = "OMG " + txt;
+                txt=txt.Replace("OMG LOL", "LOL OMG");
+            }
+            if (c == 'h')
+            {
+                txt = txt.ToUpper();
+            }
+            string[] split = txt.Split(" ");
+              string que = "";
+              string excl = "";
+              for (int i=0; i <= split.Length-1; i++)
+              {
+                que+="?";
+              }
+              for (int i=0; i <= split.Length-1; i++)
+              {
+                if (excl.Length ==0 || excl[excl.Length-1] != '!')
+                {
+                    excl += '!';
+                    continue;
+                }
+                if (excl[excl.Length-1] == '!')
+                    excl += '1';
+              }
+              txt=txt.Replace("?", que);
+              txt=txt.Replace("!", excl);
+            split = txt.Split(" ");
+            txt = "";
+            //ToDo: case of word first letter
+            //ToDo: evenly numbered words all caps: split and reconfigure
+            for(int i=0; i<= split.Length-1; i++)
+            {
+                if (i % 2 == 0)
+                    txt += split[i] + " ";
+                if (i % 2 == 1)
+                    txt += split[i].ToUpper() + " ";
+            }
+            Console.WriteLine(txt);
+            return txt.Trim();
+        }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Consecutive k-Primes
+C#:
+using System;
+
+class PrimeConsec 
+{
+    
+    public static int ConsecKprimes(int k, long[] arr) 
+    {
+       int n = 0;
+            bool prev = false;
+            for(int i=0; i<=arr.Length-1; i++)
+            {
+                if (prev && KPrime(arr[i], k))
+                    n++;
+                prev = KPrime(arr[i], k);
+            }
+            return n;
+        }
+
+        private static bool KPrime(long n, int k)
+        {
+            int p = 0;
+            while (n % 2 == 0)
+            {
+
+                p++;
+                n /= 2;
+            }
+            for (int i=3; i<= n; i+=2)
+            {
+                while (n%i==0)
+                {
+                    p++;
+                    n /= i;
+                }
+            }
+            return p==k;
+        }
+}
+2 weeks agoRefactorDiscuss
+5 kyu
+Diophantine Equation
+C#:
+using System;
+
+public class Dioph {
+	
+	public static string solEquaStr(long n) {
+		string sol="[";
+            Console.WriteLine($"test");
+            for(long i=1; i<=Math.Sqrt(n); i++)
+            {
+                if(n%i==0)
+                {
+                    long a = (long)n / i;
+                    if((a+i)%2==0)
+                    {
+                        long y;
+                        long x = (a + i) / 2;
+                        if ((x - i) % 2 == 0)
+                        {
+                            if (sol.Length > 1)
+                                sol += ", ";
+                            y = (x - i) / 2;
+                            sol += "[" + x.ToString() + ", " + y.ToString() + "]";
+                        }
+                    }
+                }
+            }
+            sol += "]";
+            Console.WriteLine(sol);
+            return sol;
+	}
+}
+2 weeks agoRefactorDiscuss
+4 kyu
+Total increasing or decreasing numbers up to a power of 10
+C#:
+using System;
+using System.Numerics;
+
+public class TotalIncreasingOrDecreasingNumbers
+{
+    public static BigInteger TotalIncDec(int x)
+    {
+        BigInteger[] asc = new BigInteger[] {45, 36, 28, 21, 15, 10, 6, 3};
+        //BigInteger[] desc = new BigInteger[] 
+        int j = 0;
+        BigInteger nine = new BigInteger();
+        BigInteger n = new BigInteger(0);
+        while (j != x+1)
+        {
+            n += Calculate(j, ref asc, ref nine);
+            j++;
+        }
+        return n;
+    }
+    public static BigInteger Calculate(int x, ref BigInteger[] asc, ref BigInteger nine)
+    { 
+        BigInteger[] temp = new BigInteger[8];
+        BigInteger n = new BigInteger(0);
+        if (x == 0)
+            n = 1;
+        if (x == 1)
+            n = 9;
+        if (x == 2)
+            n = 90;
+        if (x == 3)
+        {
+            nine = 55;
+            foreach (BigInteger m in asc)
+                n += 2 * m;
+            n += nine-8;
+        }
+        if (x > 3)
+        {
+            BigInteger lower = new BigInteger(0);
+            for (int i=0; i<=7; i++)
+            {
+                n += (2 * (i + 1) + 1) * asc[i];
+                lower += asc[7-i];
+                temp[7-i] = lower;
+            }
+            n += nine+9;
+            Console.WriteLine(lower);
+            nine += lower+1;
+            Console.WriteLine(nine);
+            for (int i = 0; i <= 7; i++)
+            {
+                asc[i] = temp[i]+1;
+                Console.WriteLine(asc[i]);
+            }
+        }
+        return n;
+    }
+}
+6 months agoRefactorDiscuss
+6 kyu
+IQ Test
+C#:
+using System;
+using System.Linq;
+
+public class IQ
+    {
+        public static int Test(string numbers)
+        { 
+             int x=-1, y=-1;
+             string[] num= numbers.Split(" ");
+             for(int i=0; i<num.Length; i++)
+             {
+               int j= Int32.Parse(num[i]);
+               System.Console.WriteLine($"{j},{x},{y}");
+               if(j%2==0&&x!=-1&&y!=-1)
+                 return y+1;
+               if(j%2==1&&x!=-1&&y!=-1)
+                 return x+1;
+               if(j%2==0)
+                 x=i;
+               if(j%2==1)
+                 y=i;
+             }
+             return num.Length;
+        }
+    }
+6 months agoRefactorDiscuss
+6 kyu
+IQ Test
+C#:
+using System;
+using System.Linq;
+
+public class IQ
+    {
+        public static int Test(string numbers)
+        { 
+             int x=-1, y=-1;
+             string[] num = numbers.Split(" ");
+             for(int i=0; i<num.Length; i++)
+             { 
+                 int j=Int32.Parse(num[i].ToString());
+                 System.Console.WriteLine($"{j},{x},{y},{i}");
+                 if(j%2==0&&x!=-1&&y!=-1)
+                   return y+1;
+                 if(j%2==1&&y!=-1&&x!=-1)
+                   return x+1;
+                 if(j%2==0)
+                   x=i;
+                 if(j%2==1)
+                   y=i;
+             }
+             return num.Length;
+        }
+    }
+6 months agoRefactorDiscuss
+6 kyu
+Unique In Order
+C#:
+using System;
+using System.Collections.Generic;
+
+public static class Kata
+{
+    public static IEnumerable<T> UniqueInOrder<T>(IEnumerable<T> iterable)
+    {
+        List<T> elem = new List<T>();
+        T last = default(T);
+        foreach(T s in iterable)
+        {
+            System.Console.WriteLine($"{s},{last}");
+            if(!(s.Equals(last)))
+                elem.Add(s);
+            last=s;
+        }
+        return elem;
+        }
+}
+6 months agoRefactorDiscuss
+6 kyu
+Duplicate Encoder
+C#:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public class Kata
+{
+  public static string DuplicateEncode(string word)
+  {
+    string result="";
+    int num;
+    foreach(char c in word)
+    {
+      num = word.ToLower().Count(s=> s.ToString()==c.ToString().ToLower());
+      if(num == 1)
+        result = result + '(';
+      if(num > 1)
+        result = result + ')';
+    }
+    return result;
+  }
+}
+6 months agoRefactorDiscuss
+6 kyu
+Detect Pangram
+C#:
+using System;
+
+public static class Kata
+{
+  public static bool IsPangram(string str)
+  {
+    string alpha="abcdefghijklmnopqrstuvwxyz";
+    foreach(char c in alpha)
+    {
+      if(!str.ToLower().Contains(c))
+        return false;
+    }
+    return true;
+  }
+}
+6 months agoRefactorDiscuss
+5 kyu
+Maximum subarray sum
+C#:
+using System;
+public static class Kata
+{
+  public static int MaxSequence(int[] arr) 
+  { 
+    int max=0, sum=0;
+    bool pos = false;
+    foreach (int i in arr)
+    {
+      Console.WriteLine($"{i}, {sum}");
+      if(i>0&&!pos)
+        pos=true;
+      if(pos)
+        sum+=i;
+      if(sum>max)
+        max=sum;
+      if(sum<0)
+      {
+        pos=false;
+        sum=0;
+      }
+    }
+    return max;
+  }
+}
