@@ -1,0 +1,44 @@
+/*A natural number is called k-prime if it has exactly k prime factors, counted with multiplicity. A natural number is thus prime if 
+and only if it is 1-prime.
+
+Given an integer k and a list arr of positive integers the function consec_kprimes (or its variants in other languages) returns how 
+many times in the sequence arr numbers come up twice in a row with exactly k prime factors?*/
+
+using System;
+
+class PrimeConsec 
+{
+    
+    public static int ConsecKprimes(int k, long[] arr) 
+    {
+       int n = 0;
+            bool prev = false;
+            for(int i=0; i<=arr.Length-1; i++)
+            {
+                if (prev && KPrime(arr[i], k))
+                    n++;
+                prev = KPrime(arr[i], k);
+            }
+            return n;
+        }
+
+        private static bool KPrime(long n, int k)
+        {
+            int p = 0;
+            while (n % 2 == 0)
+            {
+
+                p++;
+                n /= 2;
+            }
+            for (int i=3; i<= n; i+=2)
+            {
+                while (n%i==0)
+                {
+                    p++;
+                    n /= i;
+                }
+            }
+            return p==k;
+        }
+}
