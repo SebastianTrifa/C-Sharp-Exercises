@@ -1,0 +1,41 @@
+/*A perfect power is a classification of positive integers:
+
+In mathematics, a perfect power is a positive integer that can be expressed as an integer power of another positive integer. More formally,
+n is a perfect power if there exist natural numbers m > 1, and k > 1 such that mk = n.
+
+Your task is to check wheter a given integer is a perfect power. If it is a perfect power, return a pair m and k with mk = n as a proof. 
+Otherwise return Nothing, Nil, null, NULL, None or your language's equivalent.
+
+Note: For a perfect power, there might be several pairs. For example 81 = 3^4 = 9^2, so (3,4) and (9,2) are valid solutions. However, the 
+tests take care of this, so if a number is a perfect power, return any pair that proves it.
+
+This is the least efficient version of the algorithm out of 3. The others are found in PerfectPower2 and PerfectPower3*/
+
+using System;
+
+namespace Powers
+{
+    class Program
+    {
+        private static (int, int)? IsPerfectPower(int n)
+        {
+            for (int i = 2; i <= Math.Sqrt(n); i ++)
+            {
+                int n0 = n;
+                int j = 0;
+                while (n0 % i == 0)
+                {
+                    n0 /= i;
+                    j++;
+                }
+                if (n0 == 1 && j != 1)
+                {
+                    Console.WriteLine((i, j));
+                    return (i, j);
+                }
+            }
+            return null;
+        }
+    }
+}
+
