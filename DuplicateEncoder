@@ -1,0 +1,27 @@
+/*The goal of this exercise is to convert a string to a new string where each character in the new string is "(" if that character 
+appears only once in the original string, or ")" if that character appears more than once in the original string. Ignore capitalization 
+when determining if a character is a duplicate.*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+public class Kata
+{
+  public static string DuplicateEncode(string word)
+  {
+    string result="";
+    int num;
+    foreach(char c in word)
+    {
+      num = word.ToLower().Count(s=> s.ToString()==c.ToString().ToLower());
+      if(num == 1)
+        result = result + '(';
+      if(num > 1)
+        result = result + ')';
+    }
+    return result;
+  }
+}
